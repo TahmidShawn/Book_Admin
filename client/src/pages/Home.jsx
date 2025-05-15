@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BookFilter from "@/components/BookFilter";
@@ -6,12 +6,16 @@ import NoBooksFound from "@/components/NoBooksFound";
 import BookList from "@/components/BookList";
 import BookGrid from "@/components/BookGrid";
 import UploadBook from "@/components/UploadBook";
-import useDataFetch from "@/hooks/useDataFetch";
+import BookContext from "@/context/BookContext";
 
 const Home = () => {
-    // const { books } = useContext(BookContext);
-    const { data: books, loading, refetch } = useDataFetch("/book/get");
-    console.log(books);
+    const {
+        books,
+        loading,
+        handleIncreaseStock,
+        handleDecreaseStock,
+        handleDeleteBook,
+    } = useContext(BookContext);
 
     const [darkMode, setDarkMode] = useState(false);
 
@@ -101,10 +105,12 @@ const Home = () => {
                             <NoBooksFound darkMode={darkMode} />
                         ) : (
                             <BookGrid
+                                handleIncreaseStock={handleIncreaseStock}
+                                handleDecreaseStock={handleDecreaseStock}
                                 loading={loading}
-                                refetch={refetch}
                                 books={books}
                                 darkMode={darkMode}
+                                handleDeleteBook={handleDeleteBook}
                             />
                         )}
                     </TabsContent>
