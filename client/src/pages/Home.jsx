@@ -7,6 +7,7 @@ import BookList from "@/components/BookList";
 import BookGrid from "@/components/BookGrid";
 import UploadBook from "@/components/UploadBook";
 import BookContext from "@/context/BookContext";
+import { Moon, Sun } from "lucide-react";
 
 const Home = () => {
     const {
@@ -47,9 +48,9 @@ const Home = () => {
                     </h1>
                     <div className="flex items-center space-x-4">
                         <UploadBook darkMode={darkMode} />
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 ml-4">
                             <span className="text-sm">
-                                <i className="fas fa-sun"></i>
+                                <Sun />
                             </span>
                             <Switch
                                 checked={darkMode}
@@ -57,7 +58,7 @@ const Home = () => {
                                 className="cursor-pointer"
                             />
                             <span className="text-sm">
-                                <i className="fas fa-moon"></i>
+                                <Moon />
                             </span>
                         </div>
                     </div>
@@ -75,7 +76,9 @@ const Home = () => {
                             }`}
                         >
                             {books && books.length}{" "}
-                            {books && books.length > 1 ? "books" : "book"} found
+                            {books && books.length > 1
+                                ? "books found"
+                                : "0 book found"}
                         </h2>
                         <TabsList
                             className={`${
