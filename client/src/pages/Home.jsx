@@ -43,7 +43,7 @@ const Home = () => {
                         darkMode ? "text-white" : "text-gray-900"
                     }`}
                 >
-                    <h1 className="text-3xl font-bold">
+                    <h1 className="text-2xl lg:text-3xl hidden sm:flex font-bold">
                         Book Inventory Management
                     </h1>
                     <div className="flex items-center space-x-4">
