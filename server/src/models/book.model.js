@@ -4,14 +4,10 @@ const BookSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        minLength: 4,
-        maxLength: 200,
     },
     author: {
         type: String,
         required: true,
-        minLength: 2,
-        maxLength: 100,
     },
 
     price: {

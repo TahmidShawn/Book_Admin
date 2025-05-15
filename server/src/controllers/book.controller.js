@@ -82,10 +82,7 @@ export const getBooks = asyncHandler(async (req, res) => {
     // Return response
     return res.status(200).json({
         success: true,
-        data: {
-            books,
-            totalBooks,
-        },
+        data: books,
         message: "Books fetched successfully",
     });
 });
@@ -127,5 +124,80 @@ export const deleteSingleBook = asyncHandler(async (req, res) => {
         success: true,
         data: null,
         message: "Book deleted successfully",
+    });
+});
+
+// Increase book stock
+export const increaseStock = asyncHandler(async (req, res) => {
+    const { bookId } = req.params;
+    const { amount = 1 } = req.body;
+
+    // Validate amount
+    if (amount <= 0) {
+        return res.status(400).json({
+            success: false,
+            message: "Amount must be greater than 0",
+        });
+    }
+
+    const book = await Book.findByIdAndUpdate(
+        bookId,
+        { $inc: { quantity: amount } },
+        { new: true }
+    );
+
+    if (!book) {
+        return res.status(404).json({
+            success: false,
+            message: "Book not found",
+        });
+    }
+
+    return res.status(200).json({
+        success: true,
+        data: book,
+        message: `Stock increased by ${amount}`,
+    });
+});
+
+// Decrease book stock
+export const decreaseStock = asyncHandler(async (req, res) => {
+    const { bookId } = req.params;
+    const { amount = 1 } = req.body;
+
+    // Validate amount
+    if (amount <= 0) {
+        return res.status(400).json({
+            success: false,
+            message: "Amount must be greater than 0",
+        });
+    }
+
+    // Check current stock first
+    const currentBook = await Book.findById(bookId);
+    if (!currentBook) {
+        return res.status(404).json({
+            success: false,
+            message: "Book not found",
+        });
+    }
+
+    if (currentBook.quantity < amount) {
+        return res.status(400).json({
+            success: false,
+            message: "Insufficient stock",
+        });
+    }
+
+    const book = await Book.findByIdAndUpdate(
+        bookId,
+        { $inc: { quantity: -amount } },
+        { new: true }
+    );
+
+    return res.status(200).json({
+        success: true,
+        data: book,
+        message: `Stock decreased by ${amount}`,
     });
 });
